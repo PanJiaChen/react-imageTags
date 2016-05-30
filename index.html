@@ -1,11 +1,46 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Sample App</title>
-  </head>
-  <body>
-    <div id='root'>
-    </div>
-    <script src="/static/bundle.js"></script>
-  </body>
+<head>
+    <title>img-tags</title>
+</head>
+<style>
+    .body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    .container {
+        width: 100%;
+    }
+</style>
+<body>
+<div class='container'>
+    <div id='root'></div>
+    <img data-imageTagged='1' src="./images/test1.jpg"/>
+</div>
+
+<script src="/static/bundle.js"></script>
+</body>
+<script>
+    var imageTag = new ImageTag({
+        parentDom: document.getElementById('root'),
+        settings: {
+            edit: true,
+            type: 'informaton',
+            align: {
+                y: 'top',
+                x: 'left'
+            },
+            offset: {
+                top: -15,
+                left: 20
+            },
+
+            handlers: {
+//            click: 'toggle'
+            }
+        }
+    }).init();
+</script>
 </html>

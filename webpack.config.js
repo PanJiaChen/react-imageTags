@@ -8,6 +8,9 @@ module.exports = {
         'webpack/hot/only-dev-server',
         './src/index'
     ],
+    resolve: {
+        extensions: ["", ".js", ".css", ".styl"]
+    },
     output: {
         path: path.join(__dirname, 'dist'),
         filename: 'bundle.js',
@@ -18,12 +21,12 @@ module.exports = {
         new webpack.NoErrorsPlugin()
     ],
     module: {
-        loaders: [{
-            test: /\.js$/,
-            loaders: ['react-hot', 'babel'],
-            include: path.join(__dirname, 'src')
-        },
-            {test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader'},
+        loaders: [
+            {
+                test: /[\.jsx|\.js ]$/,
+                loaders: ['react-hot', 'babel'],
+                include: path.join(__dirname, 'src')
+            },
             {
                 test: /\.styl$/,
                 loader: 'style-loader!css-loader!stylus-loader'

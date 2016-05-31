@@ -10,7 +10,7 @@ export default class ImageTag {
     }
 
     init() {
-        this.pageElem = <ImageTagContainer {...this.settings} />;
+        this.pageElem = (<ImageTagContainer {...this.settings} src="./images/test1.jpg" />)
         this.ImageTagContainer = ReactDOM.render(this.pageElem, this.parentDom);
         return this;
     }

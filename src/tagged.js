@@ -4,37 +4,51 @@ import ImgContainer from './imgContainer.jsx'
 
 
 export default class Tagged extends Component {
+    state = {
+        positionInfo: {},
 
-    componentWillReceiveProps(){
-        var img = this.refs.img;
-        console.log('a')
-        console.log(img.offsetHeight)
-}
-    componentDidMount() {
+    };
+
+    componentWillReceiveProps() {
+
+
         console.log('b')
-        var img = this.refs.img;
-        console.log(img.offsetHeight)
-        console.log(img.offsetWidth)
-        console.log(img.offsetTop)
-        console.log(img.offsetLeft)
     }
-    _onLoad(){
 
-        var img = this.refs.img;
-        console.log(img.offsetHeight)
-        console.log(img.offsetWidth)
-        console.log(img.offsetTop)
-        console.log(img.offsetLeft)
+    componentDidMount() {
+        console.log('a')
     }
+
+    _onLoad() {
+        var img = this.refs.img;
+        this.setState({
+            positionInfo: {
+                offsetHeight: img.offsetHeight,
+                offsetWidth: img.offsetWidth,
+                offsetTop: img.offsetTop,
+                offsetLeft: img.offsetLeft
+            }
+        });
+    }
+
     render() {
         var settings;
         settings = this.props;
+        const hasMask = settings.hasMask;
+        var mask;
+        if (hasMask) {
+            mask = (<div className="tagged-mask"></div>)
+        } else {
+            mask = null;
+        }
         return (
             <div className="taggd-wrapper_container">
                 <Title />
-                <img  ref="img" src={this.props.src} onLoad={this._onLoad.bind(this)} />
-                <ImgContainer {...settings}>
-                </ImgContainer>
+                <div className="taggd-main">
+                    <img ref="img" src={this.props.src} onLoad={this._onLoad.bind(this)}/>
+                    {mask}
+                    <ImgContainer {...settings} imageInfo={this.state.positionInfo}></ImgContainer>
+                </div>
             </div>
 
         );

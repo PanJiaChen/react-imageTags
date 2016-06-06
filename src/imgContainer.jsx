@@ -37,24 +37,35 @@ export default class ImgContainer extends Component {
     }
 
     handleClick = (e) => {
-        console.log(e.pageX, e.pageY);
-        const x = 200;
-        const y = 200;
+        const positionInfo = this.props.imageInfo;
+        const x = (e.pageX - positionInfo.offsetLeft) / positionInfo.offsetWidth;
+        const y = (e.pageY - positionInfo.offsetTop) / positionInfo.offsetHeight;
+        const index = this.state.visualTags.length;
         const data = {
-            id: '',
+            id: index,
             source: {
                 title: ''
             },
             x: x,
-            y: y
-        }
+            y: y,
+            edit: true,
+            index: index
+        };
         const newVisualTags = this.state.visualTags;
-        newVisualTags.push(data)
-        console.log(newVisualTags)
+        newVisualTags.push(data);
+
         this.setState({
             visualTags: newVisualTags
         })
     };
+
+    handleDeleteTagClick=(index)=>{
+        const newVisualTags = this.state.visualTags;
+        newVisualTags.splice(index, 1);
+        this.setState({
+            visualTags: newVisualTags
+        })
+    }
 
     render() {
         const settings = this.props;
@@ -72,9 +83,11 @@ export default class ImgContainer extends Component {
                 pointY: (tag.y * positionInfo.offsetHeight),
                 offset: settings.offset,
                 id: tag.id,
-                source: tag.source
+                index: index,
+                source: tag.source,
+                edit: tag.edit||false
             };
-            return (<Info key={tag.id} {...data}></Info>)
+            return (<Info key={tag.id} {...data} handleDelTag={this.handleDeleteTagClick}></Info>)
         });
         if (dataType == 'information') {
 

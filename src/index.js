@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ImageTagContainer from './tagged';
 import './index.styl';
+import './iconfont/iconfont.css';
 
 export default class ImageTag {
     constructor(options = {}) {

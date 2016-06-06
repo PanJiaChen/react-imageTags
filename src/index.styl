@@ -2,7 +2,7 @@
   box-sizing border-box
 }
 
-.taggd-wrapper_container {
+.tagged-wrapper_container {
   position relative
   width 100%
   height 100%
@@ -11,7 +11,7 @@
     height 400px
     display block
   }
-  .taggd-main {
+  .tagged-main {
     position relative;
     .tagged-wrapper {
       position: absolute;
@@ -37,13 +37,12 @@
       cursor: pointer;
     }
 
-    .taggd-item-hover {
+    .tagged-item-hover {
       color: #fff;
       text-indent: 6px;
       -webkit-clip-path: polygon(25% 0%, 100% 0, 100% 100%, 25% 100%, 0 50%);
       clip-path: polygon(25% 0%, 100% 0, 100% 100%, 25% 100%, 0 50%);
-      background: #000;
-      opacity: .7;
+      background-color: rgba(0, 0, 0, 0.7);
       display: block;
       padding: 4px 10px;
       font-size: 12px;
@@ -51,6 +50,82 @@
       border-radius: 3px;
       max-width: 92px;
       word-break: break-all;
+      min-height: 20px;
+      min-width: 50px;
+    }
+    &.edit {
+      .tagged-item-hover {
+        max-width 218px;
+        -webkit-clip-path: none;
+        margin-left 10px;
+        max-width 210px;
+        padding 5px;
+        text-align left;
+        text-indent 0;
+      }
+      .edit-input {
+        width: 200px;
+        height: 30px;
+        color #fff;
+        font-size: 12px;
+        text-indent: 4px;
+        font-weight: normal;
+        background-color rgba(0, 0, 0, 0.3);
+        border: 1px solid #fff;
+      }
+      .icon-container {
+        float right;
+        margin-top 10px;
+        .iconfont_text {
+          border: 1px solid #fff;
+          width: 20px;
+          height: 20px;
+          display: inline-block;
+          font-size: 12px;
+          text-align: center;
+          line-height: 20px;
+          border-radius: 50%;
+          cursor pointer
+        }
+      }
+      .complete-tags {
+        width: 86px
+        height: 25px
+        background-color #1282f0;
+        text-align center;
+        cursor pointer;
+        border-radius 5px;
+        line-height 25px;
+        position absolute;
+        right: 0px;
+        bottom: -34px;
+      }
+      .delete-tag {
+        position absolute;
+        right: -16px;
+        top: -16px;
+        width: 16px;
+        height: 16px;
+        background #000;
+        border-radius 50%;
+        text-align center;
+        line-height 16px;
+        cursor pointer;
+      }
+      .icon-container, .complete-tags, .edit-input, .delete-tag {
+        display none;
+      }
+      .show-title {
+        display block
+      }
+    }
+    &.active {
+      .icon-container, .complete-tags, .edit-input, .delete-tag {
+        display block;
+      }
+      .show-title {
+        display none
+      }
     }
   }
 }

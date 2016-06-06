@@ -9,6 +9,26 @@ export default class Tagged extends Component {
 
     };
 
+    getElementLeft(element) {
+        var actualLeft = element.offsetLeft;
+        var current = element.offsetParent;
+        while (current !== null) {
+            actualLeft += current.offsetLeft;
+            current = current.offsetParent;
+        }
+        return actualLeft;
+    }
+
+    getElementTop(element) {
+        var actualTop = element.offsetTop;
+        var current = element.offsetParent;
+        while (current !== null) {
+            actualTop += current.offsetTop;
+            current = current.offsetParent;
+        }
+        return actualTop;
+    }
+
     componentWillReceiveProps() {
 
 
@@ -25,8 +45,8 @@ export default class Tagged extends Component {
             positionInfo: {
                 offsetHeight: img.offsetHeight,
                 offsetWidth: img.offsetWidth,
-                offsetTop: img.offsetTop,
-                offsetLeft: img.offsetLeft
+                offsetTop: this.getElementTop(img),
+                offsetLeft: this.getElementLeft(img)
             }
         });
     }
@@ -42,9 +62,9 @@ export default class Tagged extends Component {
             mask = null;
         }
         return (
-            <div className="taggd-wrapper_container">
+            <div className="tagged-wrapper_container">
                 <Title />
-                <div className="taggd-main">
+                <div className="tagged-main">
                     <img ref="img" src={this.props.src} onLoad={this._onLoad.bind(this)}/>
                     {mask}
                     <ImgContainer {...settings} imageInfo={this.state.positionInfo}></ImgContainer>

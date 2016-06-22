@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Title from './title.jsx';
-import ImgContainer from './imgContainer.jsx'
-
+import ImgContainer from './imgContainer.jsx';
+import utils from './utils';
 
 export default class Tagged extends Component {
     state = {
@@ -9,29 +9,7 @@ export default class Tagged extends Component {
 
     };
 
-    getElementLeft(element) {
-        var actualLeft = element.offsetLeft;
-        var current = element.offsetParent;
-        while (current !== null) {
-            actualLeft += current.offsetLeft;
-            current = current.offsetParent;
-        }
-        return actualLeft;
-    }
-
-    getElementTop(element) {
-        var actualTop = element.offsetTop;
-        var current = element.offsetParent;
-        while (current !== null) {
-            actualTop += current.offsetTop;
-            current = current.offsetParent;
-        }
-        return actualTop;
-    }
-
     componentWillReceiveProps() {
-
-
         console.log('b')
     }
 
@@ -45,8 +23,8 @@ export default class Tagged extends Component {
             positionInfo: {
                 offsetHeight: img.offsetHeight,
                 offsetWidth: img.offsetWidth,
-                offsetTop: this.getElementTop(img),
-                offsetLeft: this.getElementLeft(img)
+                offsetTop: utils.getElementTop(img),
+                offsetLeft: utils.getElementLeft(img)
             }
         });
     }

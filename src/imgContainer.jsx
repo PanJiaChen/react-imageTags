@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import Info from './info.jsx';
+import utils from './utils';
 
 
 export default class ImgContainer extends Component {
@@ -10,26 +11,6 @@ export default class ImgContainer extends Component {
     };
 
 
-    isEmpty(obj) {
-
-        // null and undefined are "empty"
-        if (obj == null) return true;
-
-        // Assume if it has a length property with a non-zero value
-        // that that property is correct.
-        if (obj.length > 0)    return false;
-        if (obj.length === 0)  return true;
-
-        // Otherwise, does it have any properties of its own?
-        // Note that this doesn't handle
-        // toString and valueOf enumeration bugs in IE < 9
-        for (var key in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, key)) return false;
-        }
-
-        return true;
-    }
-
     componentDidMount() {
         console.log('imgContaienr componentDidMount init')
 
@@ -38,8 +19,16 @@ export default class ImgContainer extends Component {
 
     handleClick = (e) => {
         const positionInfo = this.props.imageInfo;
-        const x = (e.pageX - positionInfo.offsetLeft) / positionInfo.offsetWidth;
-        const y = (e.pageY - positionInfo.offsetTop) / positionInfo.offsetHeight;
+        const pageY = e.pageY;
+        const pageX = e.pageX;
+        if ((positionInfo.offsetTop + positionInfo.offsetHeight) - pageY < 20) {
+            return false
+        }
+        if ((positionInfo.offsetLeft + positionInfo.offsetWidth) - pageX < 20) {
+            return false
+        }
+        const x = (pageX - positionInfo.offsetLeft) / positionInfo.offsetWidth;
+        const y = (pageY - positionInfo.offsetTop) / positionInfo.offsetHeight;
         const index = this.state.visualTags.length;
         const data = {
             id: index,
@@ -49,7 +38,8 @@ export default class ImgContainer extends Component {
             x: x,
             y: y,
             edit: true,
-            index: index
+            index: index,
+            positionInfot: positionInfo
         };
         const newVisualTags = this.state.visualTags;
         newVisualTags.push(data);
@@ -59,18 +49,18 @@ export default class ImgContainer extends Component {
         })
     };
 
-    handleDeleteTagClick=(index)=>{
+    handleDeleteTagClick = (index)=> {
         const newVisualTags = this.state.visualTags;
         newVisualTags.splice(index, 1);
         this.setState({
             visualTags: newVisualTags
         })
-    }
+    };
 
     render() {
         const settings = this.props;
         const positionInfo = this.props.imageInfo;
-        if (this.isEmpty(positionInfo)) {
+        if (utils.isEmpty(positionInfo)) {
             return false
         }
         var dataType = this.props.type;
@@ -85,7 +75,8 @@ export default class ImgContainer extends Component {
                 id: tag.id,
                 index: index,
                 source: tag.source,
-                edit: tag.edit||false
+                positionInfo: positionInfo,
+                edit: tag.edit || false
             };
             return (<Info key={tag.id} {...data} handleDelTag={this.handleDeleteTagClick}></Info>)
         });

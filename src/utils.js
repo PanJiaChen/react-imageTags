@@ -39,4 +39,12 @@ Utils.isEmpty = function (obj) {
     return true;
 }
 
+Utils.inArr=function(arr, name){
+    if(arr.indexOf(name)!=-1){
+        return true
+    }else{
+        return false
+    }
+}
+
 export default Utils

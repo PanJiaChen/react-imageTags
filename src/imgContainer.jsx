@@ -21,6 +21,7 @@ export default class ImgContainer extends Component {
         const positionInfo = this.props.imageInfo;
         const pageY = e.pageY;
         const pageX = e.pageX;
+        console.log(pageX, pageY)
         if ((positionInfo.offsetTop + positionInfo.offsetHeight) - pageY < 20) {
             return false
         }
@@ -76,7 +77,7 @@ export default class ImgContainer extends Component {
                 index: index,
                 source: tag.source,
                 positionInfo: positionInfo,
-                edit: tag.edit || false
+                couldEdit: tag.edit || false
             };
             return (<Info key={tag.id} {...data} handleDelTag={this.handleDeleteTagClick}></Info>)
         });

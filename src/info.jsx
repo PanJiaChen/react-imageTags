@@ -9,6 +9,7 @@ export default class Info extends Component {
     state = {
         active: true,
         title: this.props.source.title,
+        hoverOnLeft: false,
         left: 0,
         top: 0,
         pointControlledPosition: {
@@ -26,8 +27,11 @@ export default class Info extends Component {
     }
 
     judgeTagPositon() {
-        console.log('judgeTagPositon')
+        console.log('judgeTagPositon');
         const props = this.props;
+        let target = this.refs.taggedItemContainer;
+        let hoverOnLeft = utils.inArr(target.classList.value, 'on_left');
+        let isEdit = utils.inArr(target.classList.value, 'edit');
         const taggedHover = this.refs.taggedHover;
         const taggedPoint = this.refs.taggedPoint;
         const taggedHoverLeft = utils.getElementLeft(taggedHover) - props.positionInfo.offsetLeft;
@@ -44,14 +48,28 @@ export default class Info extends Component {
         } else {
             top = props.pointY + props.offset.top;
         }
+        //
+        //if(props.pointX>props.positionInfo.offsetWidth/2){
+        //    left = props.pointX - thW - tpW;
+        //    hoverOnLeft = true;
+        //}else{
+        //    hoverOnLeft = false;
+        //}
 
-        if (thW + left > props.positionInfo.offsetWidth) {
-            left = props.pointX - thW - tpW;
-        }
+
+        //if (!hoverOnLeft) {
+            console.log(thW, left)
+            if (thW + left > props.positionInfo.offsetWidth) {
+                left = props.pointX - thW - tpW;
+                hoverOnLeft = true;
+            }
+        //}
+
 
         this.setState({
             left: left,
-            top: top
+            top: top,
+            hoverOnLeft: hoverOnLeft
         })
     }
 
@@ -93,7 +111,7 @@ export default class Info extends Component {
         e.stopPropagation();
         const length = this.refs.editInput.value.length;
         if (length > 20) {
-            alert('字数过多')
+            alert('字数过多');
             return false;
         }
         this.setState({
@@ -120,10 +138,13 @@ export default class Info extends Component {
     };
 
     onControlledDrag = (e, position)=> {
+
+        let target = this.refs.taggedItemContainer;
+        let hoverOnLeft = utils.inArr(target.classList.value, 'on_left');
         const {x, y} = position;
         let hoverX = x;
         let hoverY = y;
-        console.log(x)
+
         const props = this.props;
         const taggedHover = this.refs.taggedHover;
         const taggedPoint = this.refs.taggedPoint;
@@ -132,12 +153,35 @@ export default class Info extends Component {
 
         const tpW = taggedPoint.offsetWidth;
 
+        const tpLeft = utils.getElementLeft(taggedPoint)
+        const thLeft = utils.getElementLeft(taggedHover)
         let left = props.pointX + props.offset.left + tpW + x;
 
         if (thW + left > props.positionInfo.offsetWidth) {
-            hoverX = x - thW - tpW;
+            if (thLeft > tpLeft) {
+                hoverX = x - thW - tpW;
+            }
+            hoverOnLeft = true;
+        } else {
+            if (thLeft < tpLeft) {
+                hoverX = x + thW + tpW;
+            }
+            hoverOnLeft = false;
         }
 
+        //let left = props.pointX + props.offset.left  + x;
+        //console.log(tpLeft,thLeft)
+        //if(left>props.positionInfo.offsetWidth/2){
+        //    if(thLeft>tpLeft){
+        //        hoverX = x - thW - tpW;
+        //    }
+        //    hoverOnLeft =true;
+        //}else{
+        //    if(thLeft<tpLeft){
+        //        hoverX = x +thW + tpW;
+        //    }
+        //    hoverOnLeft = false;
+        //}
 
         this.setState({
             pointControlledPosition: {x, y},
@@ -145,6 +189,7 @@ export default class Info extends Component {
                 x: hoverX,
                 y: y
             },
+            hoverOnLeft: hoverOnLeft
         });
     };
 
@@ -154,20 +199,20 @@ export default class Info extends Component {
         const state = this.state;
         const title = state.title;
         const pointStyle = {
-            left: props.pointX,
-            top: props.pointY,
+            left: props.pointX - 10,
+            top: props.pointY - 10,
             position: 'absolute'
         };
 
         const infoStyle = {
             left: state.left,
-            top: state.top,
+            top: state.top - 10,
             position: 'absolute'
         };
         var taggedClass = '';
         var taggedHover;
-        if (props.edit) {
-            taggedClass = 'edit';
+        if (props.couldEdit) {
+            taggedClass = 'could_edit';
             taggedHover = (
                 <div style={infoStyle} ref="taggedHover" className="tagged-item-hover" onClick={this.taggedHandleClick}>
                     <span className="show-title">{title}</span>
@@ -184,7 +229,8 @@ export default class Info extends Component {
                 <span style={infoStyle} ref="taggedHover" className="tagged-item-hover">{title}</span>
             )
         }
-        let classes = classNames('tagged-item-container info ' + taggedClass, {active: this.state.active});
+
+        let classes = classNames('tagged-item-container info ' + taggedClass, {edit: this.state.active}, {on_left: this.state.hoverOnLeft});
 
         return (
 

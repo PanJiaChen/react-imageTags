@@ -53,11 +53,20 @@
       min-height: 20px;
       min-width: 50px;
     }
-    &.edit {
+    &.on_left {
+      .tagged-item-hover {
+        -webkit-clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 0 54%, 0% 0%);
+        clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 0 54%, 0% 0%);
+        text-indent 0px;
+        padding-right 16px;
+        margin-left -20px;
+      }
+    }
+
+    &.could_edit {
       .tagged-item-hover {
         max-width 218px;
         -webkit-clip-path: none;
-        margin-left 10px;
         max-width 210px;
         padding 5px;
         text-align left;
@@ -119,12 +128,20 @@
         display block
       }
     }
-    &.active {
+    &.edit {
       .icon-container, .complete-tags, .edit-input, .delete-tag {
         display block;
       }
       .show-title {
         display none
+      }
+      .tagged-item-hover {
+        margin-left 5px;
+      }
+      &.on_left {
+        .tagged-item-hover {
+          margin-left -25px;
+        }
       }
     }
   }

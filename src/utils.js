@@ -9,6 +9,19 @@ Utils.getElementLeft = function (element) {
     return actualLeft;
 };
 
+Utils.getElementransformLeft = function (element) {
+
+    var reg=/\-?[0-9]+\.?[0-9]*/g;
+    var transform=element.style.webkitTransform.match(reg);
+    var transformLeft;
+    if(transform){
+        transformLeft=+transform[0];
+    }else{
+        transformLeft=0;
+    }
+    return transformLeft;
+};
+
 Utils.getElementTop = function (element) {
     var actualTop = element.offsetTop;
     var current = element.offsetParent;

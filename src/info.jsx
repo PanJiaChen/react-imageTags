@@ -8,7 +8,9 @@ export default class Info extends Component {
 
     state = {
         active: true,
+        showLink: true,
         title: this.props.source.title,
+        link: '#',
         hoverOnLeft: false,
         left: 0,
         top: 0,
@@ -41,7 +43,7 @@ export default class Info extends Component {
         const tpH = taggedPoint.offsetHeight;
         const tpW = taggedPoint.offsetWidth;
 
-        let left = props.pointX + props.offset.left + tpW;
+        let left = props.pointX + props.offset.left + tpW / 2;
         var top;
         if (thH > tpH) {
             top = props.pointY + props.offset.top - (thH - tpH) / 2;
@@ -56,13 +58,15 @@ export default class Info extends Component {
         //    hoverOnLeft = false;
         //}
 
-
+        console.log(utils.getElementransformLeft(taggedPoint))
         //if (!hoverOnLeft) {
-            console.log(thW, left)
-            if (thW + left > props.positionInfo.offsetWidth) {
-                left = props.pointX - thW - tpW;
-                hoverOnLeft = true;
-            }
+        //    console.log(utils.Utils.getElementransformLeft(taggedPoint))
+        if (thW + left + utils.getElementransformLeft(taggedPoint) > props.positionInfo.offsetWidth) {
+            left = props.pointX - thW - tpW / 2;
+            hoverOnLeft = true;
+        } else {
+            hoverOnLeft = false;
+        }
         //}
 
 
@@ -80,7 +84,7 @@ export default class Info extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         //console.log(nextProps, nextState)
-        if (nextState.top != this.state.top || nextState.active != this.state.active || nextState.pointControlledPosition != this.state.pointControlledPosition) {
+        if (nextState.top != this.state.top || nextState.active != this.state.active || nextState.pointControlledPosition != this.state.pointControlledPosition || nextState.showLink != this.state.showLink) {
             console.log('a')
             //this.judgeTagPositon(this)
             return true
@@ -116,7 +120,8 @@ export default class Info extends Component {
         }
         this.setState({
             active: false,
-            title: this.refs.editInput.value
+            title: this.refs.editInput.value,
+            link: this.refs.linkInput.value
         });
         //this.judgeTagPositon();
     };
@@ -130,6 +135,10 @@ export default class Info extends Component {
     linkHandleClick = (e)=> {
         e.stopPropagation();
         const taggedItemContainer = this.refs.taggedItemContainer;
+        console.log('awdwdw')
+        this.setState({
+            showLink: !this.state.showLink
+        });
     };
 
     removeHandleClick = (e)=> {
@@ -209,28 +218,43 @@ export default class Info extends Component {
             top: state.top - 10,
             position: 'absolute'
         };
-        var taggedClass = '';
-        var taggedHover;
+        let taggedHover;
+        let showTitle;
         if (props.couldEdit) {
-            taggedClass = 'could_edit';
+
+            let linkClasses = classNames({show: state.showLink});
+
             taggedHover = (
                 <div style={infoStyle} ref="taggedHover" className="tagged-item-hover" onClick={this.taggedHandleClick}>
                     <span className="show-title">{title}</span>
                     <i onClick={this.removeHandleClick.bind(null,this.props.index)}
                        className="icon iconfont delete-tag">&#xe600;</i>
                     <input type="text" ref="editInput" className="edit-input"/>
-                    <div className="icon-container"><i onClick={this.linkHandleClick}
-                                                       className="icon iconfont iconfont_text">&#xe601;</i></div>
+                    <div className={"icon-container link "+ linkClasses}><i onClick={this.linkHandleClick}
+                                                                            className="icon iconfont iconfont_text">&#xe601;</i>
+                    </div>
+                    <input type="text" ref="linkInput" className={'link-input '+linkClasses}/>
                     <div className="complete-tags" onClick={this.completeHandleClick}>添加标签</div>
                 </div>
             )
         } else {
+            if (state.showLink) {
+                showTitle = (
+                    <a target="_blank" href={state.link} className="hasLink">{title}
+                        <i className="icon iconfont">&#xe601;</i>
+                    </a>
+                )
+            } else {
+                showTitle = (
+                    <span className="hasLink">{title}</span>
+                )
+            }
             taggedHover = (
-                <span style={infoStyle} ref="taggedHover" className="tagged-item-hover">{title}</span>
+                <span style={infoStyle} ref="taggedHover" className="tagged-item-hover">{showTitle}</span>
             )
         }
 
-        let classes = classNames('tagged-item-container info ' + taggedClass, {edit: this.state.active}, {on_left: this.state.hoverOnLeft});
+        let classes = classNames('tagged-item-container info ', {could_edit: props.couldEdit}, {edit: this.state.active && props.couldEdit}, {on_left: this.state.hoverOnLeft});
 
         return (
 

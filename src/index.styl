@@ -36,6 +36,15 @@
       border-radius: 50%;
       cursor: pointer;
     }
+    .hasLink {
+      text-decoration none;
+      color #fff;
+      .iconfont {
+        color #3aefff;
+        font-size 12px;
+        padding-left 4px;
+      }
+    }
 
     .tagged-item-hover {
       color: #fff;
@@ -52,6 +61,7 @@
       word-break: break-all;
       min-height: 20px;
       min-width: 50px;
+      margin-left 5px;
     }
     &.on_left {
       .tagged-item-hover {
@@ -66,13 +76,9 @@
     &.could_edit {
       .tagged-item-hover {
         max-width 218px;
-        -webkit-clip-path: none;
         max-width 210px;
-        padding 5px;
-        text-align left;
-        text-indent 0;
       }
-      .edit-input {
+      .edit-input, .link-input {
         width: 200px;
         height: 30px;
         color #fff;
@@ -82,9 +88,14 @@
         background-color rgba(0, 0, 0, 0.3);
         border: 1px solid #fff;
       }
+      .link-input {
+        display none;
+        margin-bottom 10px;
+      }
       .icon-container {
         float right;
         margin-top 10px;
+        margin-bottom 10px;
         .iconfont_text {
           border: 1px solid #fff;
           width: 20px;
@@ -121,11 +132,16 @@
         line-height 15px;
         cursor pointer;
       }
-      .icon-container, .complete-tags, .edit-input, .delete-tag {
+      .icon-container, .complete-tags, .edit-input, .delete-tag, .link-input {
         display none;
       }
       .show-title {
         display block
+      }
+      &.on_left {
+        .tagged-item-hover {
+          margin-left -5px;
+        }
       }
     }
     &.edit {
@@ -135,12 +151,28 @@
       .show-title {
         display none
       }
+      .icon-container {
+        &.link {
+          &.show {
+            .icon {
+              background-color #1482f0;
+            }
+          }
+        }
+      }
+      .show {
+        display block
+      }
       .tagged-item-hover {
-        margin-left 5px;
+        margin-left 15px;
+        -webkit-clip-path: none;
+        padding 5px 5px 0 5px;
+        text-align left;
+        text-indent 0;
       }
       &.on_left {
         .tagged-item-hover {
-          margin-left -25px;
+          margin-left -15px;
         }
       }
     }

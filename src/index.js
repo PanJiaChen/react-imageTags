@@ -7,11 +7,11 @@ import './iconfont/iconfont.css';
 export default class ImageTag {
     constructor(options = {}) {
         this.parentDom = options.parentDom;
-        this.settings = options.settings
+        this.settings = options.settings;
     }
 
     init() {
-        this.pageElem = (<ImageTagContainer {...this.settings} src="./images/test1.jpg" />)
+        this.pageElem = (<ImageTagContainer {...this.settings} src="./images/test1.jpg" />);
         this.ImageTagContainer = ReactDOM.render(this.pageElem, this.parentDom);
         return this;
     }

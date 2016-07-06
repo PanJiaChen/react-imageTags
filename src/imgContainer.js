@@ -1,32 +1,28 @@
 import React, { Component } from 'react';
-import { findDOMNode } from 'react-dom';
-import Info from './info.jsx';
+import Info from './info.js';
 import utils from './utils';
 
-
 export default class ImgContainer extends Component {
-
     state = {
         visualTags: this.props.visualTags
-    };
-
+    }
 
     componentDidMount() {
-        console.log('imgContaienr componentDidMount init')
+        console.log('imgContaienr componentDidMount init');
 
-        console.log('imgContaienr componentDidMount')
+        console.log('imgContaienr componentDidMount');
     }
 
     handleClick = (e) => {
         const positionInfo = this.props.imageInfo;
         const pageY = e.pageY;
         const pageX = e.pageX;
-        console.log(pageX, pageY)
+        console.log(pageX, pageY);
         if ((positionInfo.offsetTop + positionInfo.offsetHeight) - pageY < 20) {
-            return false
+            return false;
         }
         if ((positionInfo.offsetLeft + positionInfo.offsetWidth) - pageX < 20) {
-            return false
+            return false;
         }
         const x = (pageX - positionInfo.offsetLeft) / positionInfo.offsetWidth;
         const y = (pageY - positionInfo.offsetTop) / positionInfo.offsetHeight;
@@ -36,10 +32,10 @@ export default class ImgContainer extends Component {
             source: {
                 title: ''
             },
-            x: x,
-            y: y,
+            x,
+            y,
             edit: true,
-            index: index,
+            index,
             positionInfot: positionInfo
         };
         const newVisualTags = this.state.visualTags;
@@ -47,47 +43,43 @@ export default class ImgContainer extends Component {
 
         this.setState({
             visualTags: newVisualTags
-        })
+        });
     };
 
-    handleDeleteTagClick = (index)=> {
+    handleDeleteTagClick = (index) => {
         const newVisualTags = this.state.visualTags;
         newVisualTags.splice(index, 1);
         this.setState({
             visualTags: newVisualTags
-        })
+        });
     };
 
     render() {
         const settings = this.props;
         const positionInfo = this.props.imageInfo;
         if (utils.isEmpty(positionInfo)) {
-            return false
+            return false;
         }
-        var dataType = this.props.type;
+        const dataType = this.props.type;
 
-        var visualTagsArr = this.state.visualTags;
+        const visualTagsArr = this.state.visualTags;
 
-        var tagComponents = visualTagsArr.map((tag, index) => {
+        const tagComponents = visualTagsArr.map((tag, index) => {
             const data = {
                 pointX: (tag.x * positionInfo.offsetWidth),
                 pointY: (tag.y * positionInfo.offsetHeight),
                 offset: settings.offset,
                 id: tag.id,
-                index: index,
+                index,
                 source: tag.source,
-                positionInfo: positionInfo,
+                positionInfo,
                 couldEdit: tag.edit || false
             };
-            return (<Info key={tag.id} {...data} handleDelTag={this.handleDeleteTagClick}></Info>)
+            return (<Info key={tag.id} handleDelTag={this.handleDeleteTagClick} {...data} />);
         });
         if (dataType == 'information') {
-
+            //
         }
-        return (
-            <div className="tagged-wrapper" onClick={this.handleClick}>
-                {tagComponents}
-            </div>
-        );
+        return (<div className="tagged-wrapper" onClick={this.handleClick}> {tagComponents} </div>);
     }
 }

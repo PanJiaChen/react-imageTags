@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
-import Title from './title.jsx';
-import ImgContainer from './imgContainer.jsx';
+import Title from './title.js';
+import ImgContainer from './imgContainer.js';
 import utils from './utils';
 
 export default class Tagged extends Component {
     state = {
-        positionInfo: {},
-
+        positionInfo: {}
     };
 
-    componentWillReceiveProps() {
-        console.log('b')
-    }
-
     componentDidMount() {
-        console.log('a')
+        console.log('a');
     }
 
-    _onLoad() {
-        var img = this.refs.img;
+    componentWillReceiveProps() {
+        console.log('b');
+    }
+
+    onLoad() {
+        const img = this.refs.img;
         this.setState({
             positionInfo: {
                 offsetHeight: img.offsetHeight,
@@ -30,12 +29,11 @@ export default class Tagged extends Component {
     }
 
     render() {
-        var settings;
-        settings = this.props;
+        const settings = this.props;
         const hasMask = settings.hasMask;
-        var mask;
+        let mask;
         if (hasMask) {
-            mask = (<div className="tagged-mask"></div>)
+            mask = (<div className="tagged-mask"></div>);
         } else {
             mask = null;
         }
@@ -43,9 +41,9 @@ export default class Tagged extends Component {
             <div className="tagged-wrapper_container">
                 <Title />
                 <div className="tagged-main">
-                    <img ref="img" src={this.props.src} onLoad={this._onLoad.bind(this)}/>
+                    <img alt="" ref="img" src="{this.props.src}" onLoad={this.onLoad.bind(this)} />
                     {mask}
-                    <ImgContainer {...settings} imageInfo={this.state.positionInfo}></ImgContainer>
+                    <ImgContainer {...settings} imageInfo={this.state.positionInfo}/>
                 </div>
             </div>
 

@@ -36,28 +36,13 @@ module.exports = {
                 loader: 'style-loader!css-loader'
             },
             {
-                test   : /\.woff|\.woff2|\.svg|.eot|\.ttf/,
-                loader : 'url?prefix=font/&limit=10000'
+                test: /\.woff|\.woff2|\.svg|.eot|\.ttf/,
+                loader: 'url?prefix=font/&limit=10000'
             },
             {
                 test: /\.(png|jpg|gif)$/,
                 loader: 'url-loader'
             }
         ]
-    },
-    externals: {
-        'react': {
-            'commonjs': 'react',
-            'commonjs2': 'react',
-            'amd': 'react',
-            // React dep should be available as window.React, not window.react
-            'root': 'React'
-        },
-        'react-dom': {
-            'commonjs': 'react-dom',
-            'commonjs2': 'react-dom',
-            'amd': 'react-dom',
-            'root': 'ReactDOM'
-        }
     }
 };

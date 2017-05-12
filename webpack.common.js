@@ -33,8 +33,8 @@ module.exports = {
                 loader: 'style-loader!css-loader'
             },
             {
-                test   : /\.woff|\.woff2|\.svg|.eot|\.ttf/,
-                loader : 'url?prefix=font/&limit=10000'
+                test: /\.woff|\.woff2|\.svg|.eot|\.ttf/,
+                loader: 'url?prefix=font/&limit=10000'
             },
             {
                 test: /\.(png|jpg|gif)$/,

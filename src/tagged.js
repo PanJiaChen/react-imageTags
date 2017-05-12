@@ -41,7 +41,7 @@ export default class Tagged extends Component {
             <div className="tagged-wrapper_container">
                 <Title />
                 <div className="tagged-main">
-                    <img alt="" ref="img" src="{this.props.src}" onLoad={this.onLoad.bind(this)} />
+                    <img alt="" ref="img" src={this.props.src} onLoad={this.onLoad.bind(this)} />
                     {mask}
                     <ImgContainer {...settings} imageInfo={this.state.positionInfo}/>
                 </div>
